@@ -52,7 +52,7 @@ class ListPage():
         videoPage.moreInfo()
         moreInfo=MoreInfo(self.driver)
         # moreInfo.synopsis()
-        moreInfo.images()
+        moreInfo.comments()
         
 
 
