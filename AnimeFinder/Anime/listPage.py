@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from Anime.getLinks import Links
 from Anime.VideoPage import VideoPage
+from Anime.MoreInfo import MoreInfo
 class ListPage():
     def __init__(self,driver:WebDriver):
         self.driver=driver
@@ -49,6 +50,9 @@ class ListPage():
         videoPage=VideoPage(self.driver)
         # videoPage.getEpisodeCount()
         videoPage.moreInfo()
+        moreInfo=MoreInfo(self.driver)
+        # moreInfo.synopsis()
+        moreInfo.similarTab()
         
 
 
