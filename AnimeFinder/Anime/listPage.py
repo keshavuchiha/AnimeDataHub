@@ -48,11 +48,11 @@ class ListPage():
         self.driver.execute_script('arguments[0].scrollIntoView(true);',btn)
         self.driver.execute_script('arguments[0].click();',btn)
         videoPage=VideoPage(self.driver)
-        # videoPage.getEpisodeCount()
+        # videoPage.getComments()
         videoPage.moreInfo()
         moreInfo=MoreInfo(self.driver)
         # moreInfo.synopsis()
-        moreInfo.comments()
+        moreInfo.details()
         
 
 

@@ -213,17 +213,6 @@ class MoreInfo():
         parents=self.driver.find_elements(By.XPATH,'//li[@class="post"]/ancestor-or-self::li')
         children=self.driver.find_elements(By.XPATH,'//li[@class="post"]')
 
-        # comments_text=self.driver.find_elements(By.XPATH,'//div[@class="post-message "]')
-        # for comment in comments_text:
-        #     print(comment.text)
-        # p=[]
-        # c=[]
-        # cnt=0
-        # for i in range(len(children)):
-        #     # print(parents[i].get_attribute('id'),end=':')
-        #     # print(children[i].get_attribute('id'))
-        #     if(parents[i].get_attribute('id')!=children[i].get_attribute('id')):
-        #         print(parents[i].text)
         # //li[@class="post" and @id="post-5932989784"]//div[@class="post-message "]//div//p
         # messgae
         # //li[@class="post" and @id="post-5932989784"]//header[@class="comment__header"]//span[contains(@class,"author")]//a
