@@ -118,6 +118,7 @@ class MoreInfo():
         print(info)
     
     def trailerTab(self):
+
         WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="traillerbtn"]')))
         # sleep(2)
         trailer=self.driver.find_element(By.XPATH,'//li[@id="traillerbtn"]')
@@ -131,5 +132,19 @@ class MoreInfo():
         print(self.trailer.get_attribute('src'))
 
         # self.related.click()
-        
+        self.driver.switch_to.default_content()
+        pass
+    def images(self):
+        # //img[@id="maincoverimage"]
+        # //div[@id="picViewer"]
+        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//img[@id="maincoverimage"]')))
+        # sleep(2)
+        animeImages=self.driver.find_element(By.XPATH,'//img[@id="maincoverimage"]')
+        animeImages.click()
+
+        WebDriverWait(self.driver,timeout= 15).until(EC.visibility_of_all_elements_located((By.XPATH,'//div[@id="picViewer"]//img')))
+        self.images=self.driver.find_elements(By.XPATH,'//div[@id="picViewer"]//img')
+        for image in self.images:
+            print(image.get_attribute('src'))
+        # self.driver.switch_to.default_content()
         pass
