@@ -1,6 +1,7 @@
 
 from time import sleep
 import time
+import numpy as np
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -28,31 +29,56 @@ class ListPage():
         print(anime[2].text)
         # //div[@id="listplace"]/div[text()="GOGO"]/a[not(contains(@title,"Dub"))]
         subAnime=self.driver.find_elements(By.XPATH,'//div[@id="listplace"]/div[text()="GOGO"]/a[not(contains(@title,"Dub"))]')
+        animeLinkList=[]
         for anime in subAnime:
             # print(anime.get_attribute('innerHTML'))
             # btn
-            if(anime.get_attribute('innerHTML')=='Kimetsu no Yaiba'):
+            animeLinkList.append(anime.get_attribute('href')) 
+            # if(anime.get_attribute('innerHTML')=='Kimetsu no Yaiba'):
                 
-                # 
-                # self.driver.execute_script('arguments[0].scrollIntoView(true);',anime)
-                # WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//div[@id="listplace"]/div[text()="GOGO"]/a[not(contains(@title,"Dub")) and text()="Kimetsu no Yaiba"]')))
                 
-                # btn=self.driver.find_element(By.XPATH,'//div[@id="listplace"]/div[text()="GOGO"]/a[not(contains(@title,"Dub")) and text()="Kimetsu no Yaiba"]')
-                # self.driver.execute_script('arguments[0].click();',anime)
-                # self.driver.get(anime.get_attribute('href'))
-                print(anime.get_attribute('href'))
-                # anime.click()
-                # time.sleep(5)
-                btn=anime
-                # self.driver.get(anime.get_attribute('href'))
-        self.driver.execute_script('arguments[0].scrollIntoView(true);',btn)
-        self.driver.execute_script('arguments[0].click();',btn)
-        videoPage=VideoPage(self.driver)
-        # videoPage.getComments()
-        videoPage.moreInfo()
-        moreInfo=MoreInfo(self.driver)
-        # moreInfo.synopsis()
-        moreInfo.details()
+            #     print(anime.get_attribute('href'))
+
+            #     btn=anime
+        # print(animeLinkList)    
+        # self.driver.execute_script('arguments[0].scrollIntoView(true);',btn)
+        # self.driver.execute_script('arguments[0].click();',btn)
+        res=[]
+        for link in animeLinkList:
+            self.driver.get(link)
+            videoPage=VideoPage(self.driver)
+            # sleep(2)
+            epCount=int(videoPage.getEpisodeCount())
+            # sleep(2)
+            comments=[]
+            for i in range(epCount):
+                videoPage.selectEpisode(i+1,link)
+                sleep(2)
+                comment=videoPage.getComments()
+                comments.append(comment)
+            print(comments)
+            res.append([comments,link])
+        np.save('temp.npy',res)
+        
+
+        # self.driver.get(animeLinkList[105])
+        
+        # # sleep(5)
+        # videoPage=VideoPage(self.driver)
+        # # videoPage.selectEpisode(3)
+        # # videoPage.getComments()
+        # videoPage.getEpisodeCount()
+        # videoPage.selectEpisode(3)
+
+
+        # iterate in episode
+        # get its comments store in database
+        # more info
+
+
+        # moreInfo=MoreInfo(self.driver)
+        # # moreInfo.synopsis()
+        # moreInfo.details()
         
 
 

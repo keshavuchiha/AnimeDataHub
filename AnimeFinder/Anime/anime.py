@@ -17,7 +17,14 @@ class Anime(webdriver.Chrome):
         link=self.find_element(By.XPATH,'//a[@title="A-Z List"]')
         link.click()
         page=ListPage(driver=self)
-        page.startChar('K')
+        # page.startChar('K')
+        azlist=['#']
+        for i in range(ord('A'),ord('Z')+1):
+            azlist.append(chr(i))
+        # print(azlist)       
+        for i in azlist:
+            page.startChar(i) 
+        self.driver.get('https://animixplay.to/list')
     def landingPage(self):
         self.get(const.BASE_URL)
         
