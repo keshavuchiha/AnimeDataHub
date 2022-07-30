@@ -30,8 +30,8 @@ def getInfo(details:list):
                 info['rating']=temp[0].strip()
                 info['ratingDetail']=temp[1].strip()
             elif row[0]=='Duration':
-                temp=row[1].split(' ')
-                info['duration']=temp[0].strip()
+                # temp=row[1].split(' ')
+                info['duration']=row[1].strip()
             elif row[0]=='Studios':
                 temp=row[1].split(',')
                 info['studios']=temp

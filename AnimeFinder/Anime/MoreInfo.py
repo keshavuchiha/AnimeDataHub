@@ -1,4 +1,5 @@
 
+import re
 from time import sleep
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -39,11 +40,6 @@ class MoreInfo():
         print(self.names.text)
         names=self.names.text.split('\n')
         print(names)
-        # details=self.names.text.split('\n')
-        # print(details[0].split(':'))
-        # info=getInfo(details)
-
-        # print(info)
     def relatedTab(self):
         WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="relatebtn"]')))
         # sleep(2)
@@ -93,4 +89,47 @@ class MoreInfo():
         for t in self.similar:
             l.append(t.text.strip())
         print(l)
+        pass
+    def opEndTab(self):
+        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="songbtn"]')))
+        # sleep(2)
+        opend=self.driver.find_element(By.XPATH,'//li[@id="songbtn"]')
+        opend.click()
+
+        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//div[@id="panelplace"]')))
+        self.songs=self.driver.find_element(By.XPATH,'//div[@id="panelplace"]')
+        print('songs')
+        print(self.songs.text)
+        # self.related.click()
+        songsData=self.songs.text.split('\n\n')
+        info={}
+        for data in songsData:
+            data=data.split(':',1)
+            data[0]=data[0].strip()
+            data[1]=data[1].split('\n')
+            for i in range(len(data[1])):
+                data[1][i]=data[1][i][2:].strip()
+                data[1][i]=re.sub(r'\(eps[^)]*\)\s*Play$','',data[1][i])
+                if(data[1][i][-4:]=='Play'):
+                    data[1][i]=data[1][i][:-4]
+                data[1][i]=data[1][i].strip()
+            data[1]=data[1][1:]
+            info[data[0]]=data[1]
+        print(info)
+    
+    def trailerTab(self):
+        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="traillerbtn"]')))
+        # sleep(2)
+        trailer=self.driver.find_element(By.XPATH,'//li[@id="traillerbtn"]')
+        trailer.click()
+
+        WebDriverWait(self.driver,timeout= 15).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,'//*[@id="iframeanime"]')))
+        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//iframe')))
+        self.trailer=self.driver.find_element(By.XPATH,'//iframe')
+        # self.trailer=self.driver.find_element(By.XPATH,'//*[@id="iframeanime"]')
+        # print(self.trailer.get_attribute('src'))
+        print(self.trailer.get_attribute('src'))
+
+        # self.related.click()
+        
         pass
