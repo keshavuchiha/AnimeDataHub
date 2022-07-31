@@ -11,9 +11,12 @@ class VideoPage():
         self.driver=driver
     
     def getEpisodeCount(self)->int:
-        self.epCount=self.driver.find_element(By.XPATH,'//span[@id="epsavailable"]').get_attribute('innerHTML')
-        print(self.epCount)
-        return self.epCount
+        try:
+            self.epCount=self.driver.find_element(By.XPATH,'//span[@id="epsavailable"]').get_attribute('innerHTML')
+            print(self.epCount)
+            return self.epCount
+        except:
+            return 0
         pass
     def selectEpisode(self,epNum:int,link:str):
         # sleep(5)
@@ -113,9 +116,13 @@ class VideoPage():
         
         pass
     def moreInfo(self):
-        moreInfoBtn=self.driver.find_element(By.XPATH,'//*[text()="More info"]')
-        self.driver.execute_script('arguments[0].scrollIntoView(true);',moreInfoBtn)
-        self.driver.execute_script('arguments[0].click();',moreInfoBtn)
+        try:
+            
+            moreInfoBtn=self.driver.find_element(By.XPATH,'//*[text()="More info"]')
+            self.driver.execute_script('arguments[0].scrollIntoView(true);',moreInfoBtn)
+            self.driver.execute_script('arguments[0].click();',moreInfoBtn)
+        except:
+            return
         
 
 

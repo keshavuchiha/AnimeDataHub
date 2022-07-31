@@ -1,12 +1,13 @@
 
 from time import sleep
 import time
+from slugify import slugify
 import numpy as np
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-
+import json
 from Anime.getLinks import Links
 from Anime.VideoPage import VideoPage
 from Anime.MoreInfo import MoreInfo
@@ -15,9 +16,11 @@ class ListPage():
         self.driver=driver
     
     def startChar(self,char:str):
+        res=[]
         char=char[0].upper()
         # self.driver.find_element(By.XPATH,f'//button[text()="{char}"]')
         # sleep(2)
+        
         print(f'//button[text()="{char}"]')
         xpath=f'//button[text()="{char}"]'
         WebDriverWait(self.driver,timeout= 20).until(EC.presence_of_all_elements_located((By.XPATH,'//div[@id="listplace"]/div')))
@@ -30,6 +33,7 @@ class ListPage():
         # //div[@id="listplace"]/div[text()="GOGO"]/a[not(contains(@title,"Dub"))]
         subAnime=self.driver.find_elements(By.XPATH,'//div[@id="listplace"]/div[text()="GOGO"]/a[not(contains(@title,"Dub"))]')
         animeLinkList=[]
+        
         for anime in subAnime:
             # print(anime.get_attribute('innerHTML'))
             # btn
@@ -43,9 +47,10 @@ class ListPage():
         # print(animeLinkList)    
         # self.driver.execute_script('arguments[0].scrollIntoView(true);',btn)
         # self.driver.execute_script('arguments[0].click();',btn)
-        res=[]
+        
         for link in animeLinkList:
             self.driver.get(link)
+            temp=link.split('/')
             videoPage=VideoPage(self.driver)
             # sleep(2)
             epCount=int(videoPage.getEpisodeCount())
@@ -58,9 +63,12 @@ class ListPage():
                 comments.append(comment)
             print(comments)
             res.append([comments,link])
-        np.save('temp.npy',res)
         
-
+        # np.save('temp.npy',res)
+        resjson=json.dumps(res)
+        with open('data.json', 'w', encoding='utf-8') as f:
+            json.dump(res, f, ensure_ascii=False, indent=4)
+        print(res)
         # self.driver.get(animeLinkList[105])
         
         # # sleep(5)
@@ -76,9 +84,11 @@ class ListPage():
         # more info
 
 
-        # moreInfo=MoreInfo(self.driver)
-        # # moreInfo.synopsis()
-        # moreInfo.details()
+            # moreInfo=MoreInfo(self.driver)
+            # # moreInfo.synopsis()
+            # moreInfo.details()
+
+
         
 
 

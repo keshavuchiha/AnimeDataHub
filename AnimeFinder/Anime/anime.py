@@ -3,7 +3,7 @@ import types
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-
+from slugify import slugify
 import Anime.constants as const
 from Anime.listPage import ListPage 
 class Anime(webdriver.Chrome):
@@ -23,6 +23,7 @@ class Anime(webdriver.Chrome):
             azlist.append(chr(i))
         # print(azlist)       
         for i in azlist:
+            
             page.startChar(i) 
         self.driver.get('https://animixplay.to/list')
     def landingPage(self):
