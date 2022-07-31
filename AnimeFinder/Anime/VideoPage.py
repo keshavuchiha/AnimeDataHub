@@ -52,17 +52,6 @@ class VideoPage():
             
             last_height = self.driver.execute_script("return document.body.scrollHeight")
             while(True):
-                # sleep(1)
-                # try:
-                #     # WebDriverWait(self.driver,timeout= 3).until(EC.element_to_be_clickable((By.XPATH,'//div[@class="load-more" and @style]/a')))
-                #     if(self.driver.find_element(By.XPATH,'//div[@class="load-more" and @style]/a')):
-                #         print('no element found')
-                #         break
-                # except NoSuchElementException:
-                #     continue
-                
-                # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                # sleep(1)
                 try:
 
                     WebDriverWait(self.driver,timeout= 3).until(EC.element_to_be_clickable((By.XPATH,'//div[@class="load-more"]/a')))

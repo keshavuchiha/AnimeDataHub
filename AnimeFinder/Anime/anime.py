@@ -1,3 +1,4 @@
+import os
 import typing
 import types
 from selenium import webdriver
@@ -23,9 +24,14 @@ class Anime(webdriver.Chrome):
             azlist.append(chr(i))
         # print(azlist)       
         for i in azlist:
-            
+            if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',i.upper())):
+                os.makedirs(os.path.join(const.BASE_FOLDER,'data',i.upper()))
+            if os.path.exists(os.path.join(const.BASE_FOLDER,'data',i.upper(),'completed.txt')):
+                continue
             page.startChar(i) 
-        self.driver.get('https://animixplay.to/list')
+            with open(os.path.join(const.BASE_FOLDER,'data',i.upper(),'completed.txt'),'w+') as f:
+                f.write(f'{i} completed')
+            self.get('https://animixplay.to/list')
     def landingPage(self):
         self.get(const.BASE_URL)
         

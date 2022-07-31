@@ -11,16 +11,19 @@ import json
 from Anime.getLinks import Links
 from Anime.VideoPage import VideoPage
 from Anime.MoreInfo import MoreInfo
+import Anime.constants as const
+import os
 class ListPage():
     def __init__(self,driver:WebDriver):
         self.driver=driver
     
     def startChar(self,char:str):
+        # try:
         res=[]
         char=char[0].upper()
         # self.driver.find_element(By.XPATH,f'//button[text()="{char}"]')
-        # sleep(2)
-        
+        sleep(2)
+
         print(f'//button[text()="{char}"]')
         xpath=f'//button[text()="{char}"]'
         WebDriverWait(self.driver,timeout= 20).until(EC.presence_of_all_elements_located((By.XPATH,'//div[@id="listplace"]/div')))
@@ -51,24 +54,43 @@ class ListPage():
         for link in animeLinkList:
             self.driver.get(link)
             temp=link.split('/')
+            slug=slugify(temp[-1]);
+            if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug)):
+                os.makedirs(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug))
+            if os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completed.txt')):
+                continue
             videoPage=VideoPage(self.driver)
             # sleep(2)
             epCount=int(videoPage.getEpisodeCount())
             # sleep(2)
             comments=[]
             for i in range(epCount):
+                if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}')):
+                    os.makedirs(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}'))
+                if os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt')):
+                    continue
                 videoPage.selectEpisode(i+1,link)
                 sleep(2)
                 comment=videoPage.getComments()
+                with open(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','comment.json'), 'w+', encoding='utf-8') as f:
+                    json.dump(comment, f, ensure_ascii=False, indent=4)
+                if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt')):
+                    os.makedirs(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt'))
                 comments.append(comment)
             print(comments)
             res.append([comments,link])
-        
+            with open(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completed.txt'),'w+') as f:
+                f.write('this link has completed comments')
+
         # np.save('temp.npy',res)
-        resjson=json.dumps(res)
+        
+        # resjson=json.dumps(res)
         with open('data.json', 'w', encoding='utf-8') as f:
             json.dump(res, f, ensure_ascii=False, indent=4)
         print(res)
+        return res
+        # except:
+        #     print(f'{char} error')
         # self.driver.get(animeLinkList[105])
         
         # # sleep(5)
