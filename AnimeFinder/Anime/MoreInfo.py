@@ -15,26 +15,28 @@ class MoreInfo():
         self.driver=driver
     
     def synopsis(self)->str:
-        WebDriverWait(self.driver,timeout= 15).until(EC.visibility_of_element_located((By.XPATH,'//div[@id="panelplace"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.visibility_of_element_located((By.XPATH,'//div[@id="panelplace"]')))
         self.synopsis=self.driver.find_element(By.XPATH,'//div[@id="panelplace"]')
         print('synopsis')
         print(self.synopsis.get_attribute('innerHTML'))
         return self.synopsis.get_attribute('innerHTML')
     
     def details(self)->dict:
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//span[@id="addInfo"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//span[@id="addInfo"]')))
         # sleep(2)
         self.details=self.driver.find_element(By.XPATH,'//span[@id="addInfo"]')
         print('details')
         print(self.details.text)
         details=self.details.text.split('\n')
-        print(details[0].split(':'))
+        # print(details[0].split(':'))
+        # print(details)
         info=getInfo(details)
+        print(info)
         return info
         # print(info)     
     def names(self)->list:
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//span[@id="addTitle"]')))
-        # sleep(2)
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//span[@id="addTitle"]')))
+        sleep(1)
         self.names=self.driver.find_element(By.XPATH,'//span[@id="addTitle"]')
         print('names')
         print(self.names.text)
@@ -42,7 +44,7 @@ class MoreInfo():
         print(names)
         return names
     def relatedTab(self)->dict:
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="relatebtn"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="relatebtn"]')))
         # sleep(2)
         related=self.driver.find_element(By.XPATH,'//li[@id="relatebtn"]')
         # print('related')
@@ -51,7 +53,7 @@ class MoreInfo():
         # names=self.names.text.split('\n')
         # print(names)
 
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//div[@id="panelplace"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//div[@id="panelplace"]')))
         # sleep(2)
         self.related=self.driver.find_element(By.XPATH,'//div[@id="panelplace"]')
         print('related')
@@ -71,8 +73,7 @@ class MoreInfo():
         return info
         pass
     def similarTab(self)->list:
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="recombtn"]')))
-        # sleep(2)
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="recombtn"]')))
         similar=self.driver.find_element(By.XPATH,'//li[@id="recombtn"]')
         # print('related')
         # print(related.text)
@@ -80,7 +81,7 @@ class MoreInfo():
         # names=self.names.text.split('\n')
         # print(names)
 
-        WebDriverWait(self.driver,timeout= 15).until(EC.visibility_of_all_elements_located((By.XPATH,'//p[@class="name"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.visibility_of_all_elements_located((By.XPATH,'//p[@class="name"]')))
         # sleep(2)
         self.similar=self.driver.find_elements(By.XPATH,'//p[@class="name"]//a')
         print('similar')
@@ -93,12 +94,12 @@ class MoreInfo():
         return l
         pass
     def opEndTab(self)->dict:
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="songbtn"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="songbtn"]')))
         # sleep(2)
         opend=self.driver.find_element(By.XPATH,'//li[@id="songbtn"]')
         opend.click()
 
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//div[@id="panelplace"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//div[@id="panelplace"]')))
         self.songs=self.driver.find_element(By.XPATH,'//div[@id="panelplace"]')
         print('songs')
         print(self.songs.text)
@@ -120,54 +121,61 @@ class MoreInfo():
         print(info)
         return info
     
-    def trailerTab(self):
+    def trailerTab(self)->dict:
 
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="traillerbtn"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//li[@id="traillerbtn"]')))
         # sleep(2)
         trailer=self.driver.find_element(By.XPATH,'//li[@id="traillerbtn"]')
         trailer.click()
 
-        WebDriverWait(self.driver,timeout= 15).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,'//*[@id="iframeanime"]')))
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//iframe')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,'//*[@id="iframeanime"]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//iframe')))
         self.trailer=self.driver.find_element(By.XPATH,'//iframe')
         # self.trailer=self.driver.find_element(By.XPATH,'//*[@id="iframeanime"]')
         # print(self.trailer.get_attribute('src'))
         print(self.trailer.get_attribute('src'))
-
+        trailerSrc=self.trailer.get_attribute('src')
         # self.related.click()
         self.driver.switch_to.default_content()
-        pass
+        return {"trailerSrc":trailerSrc}
     def images(self)->list:
 
         # //img[@id="maincoverimage"]
         # //div[@id="picViewer"]
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//img[@id="maincoverimage"]')))
+        self.driver.execute_script("window.scrollTo(0, 0);")
+        sleep(0.5)
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//img[@id="maincoverimage"]')))
         # sleep(2)
         animeImages=self.driver.find_element(By.XPATH,'//img[@id="maincoverimage"]')
-        animeImages.click()
+        self.driver.execute_script("arguments[0].scrollIntoView();",animeImages);
+        self.driver.execute_script('arguments[0].click();',animeImages)
+        # animeImages.click()
 
-        WebDriverWait(self.driver,timeout= 15).until(EC.visibility_of_all_elements_located((By.XPATH,'//div[@id="picViewer"]//img')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.visibility_of_all_elements_located((By.XPATH,'//div[@id="picViewer"]//img')))
         self.images=self.driver.find_elements(By.XPATH,'//div[@id="picViewer"]//img')
         imageLinkList=[]
         for image in self.images:
             print(image.get_attribute('src'))
             imageLinkList.append(image.get_attribute('src'))
+        self.driver.switch_to.default_content()
+        # sleep(0.5)
         return imageLinkList
-        # self.driver.switch_to.default_content()
-        pass
+        # 
     def comments(self)->list:
         # //button[@id="showcommentbtn"]
         # //div[@class="load-more"]/a
-        WebDriverWait(self.driver,timeout= 15).until(EC.element_to_be_clickable((By.XPATH,'//button[@id="showcommentbtn"]')))
+        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        sleep(0.5)
+        WebDriverWait(self.driver,timeout= 2).until(EC.element_to_be_clickable((By.XPATH,'//button[@id="showcommentbtn"]')))
         commentBtn=self.driver.find_element(By.XPATH,'//button[@id="showcommentbtn"]')
         commentBtn.click()
         sleep(2)
-        WebDriverWait(self.driver,timeout= 15).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,'//iframe[@title="Disqus" and @src]')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,'//iframe[@title="Disqus" and @src]')))
         # print(self.driver.page_source)
         
        
-        WebDriverWait(self.driver,timeout= 15).until(EC.presence_of_element_located((By.XPATH,'//div[@class="load-more"]/a')))
-        print(self.driver.find_elements(By.XPATH,'//div[@class="post-message "]')[2].text)
+        WebDriverWait(self.driver,timeout= 2).until(EC.presence_of_element_located((By.XPATH,'//div[@class="load-more"]/a')))
+        # print(self.driver.find_elements(By.XPATH,'//div[@class="post-message "]')[2].text)
         loadCommentBtn= self.driver.find_element(By.XPATH,'//div[@class="load-more"]/a')
         
         last_height = self.driver.execute_script("return document.body.scrollHeight")
@@ -204,7 +212,7 @@ class MoreInfo():
                 break
             
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        WebDriverWait(self.driver,timeout= 15).until(EC.visibility_of_all_elements_located((By.XPATH,'//li[@class="post"]/ancestor-or-self::li')))
+        WebDriverWait(self.driver,timeout= 2).until(EC.visibility_of_all_elements_located((By.XPATH,'//li[@class="post"]/ancestor-or-self::li')))
         # sleep(5)
         parents=self.driver.find_elements(By.XPATH,'//li[@class="post"]/ancestor-or-self::li')
         children=self.driver.find_elements(By.XPATH,'//li[@class="post"]')
@@ -230,5 +238,6 @@ class MoreInfo():
             info['timeCreation']=self.driver.find_element(By.XPATH,f'//li[@class="post" and @id="{id}"]//header[@class="comment__header"]//span[@class="post-meta"]//a').get_attribute('title')
             print(info)
             commentList.append(info)
+        self.driver.switch_to.default_content()
+        # self.driver.execute_script("window.scrollTo(0, 0);")
         return commentList
-        pass

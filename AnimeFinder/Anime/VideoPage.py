@@ -74,7 +74,6 @@ class VideoPage():
                 
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             WebDriverWait(self.driver,timeout= 15).until(EC.visibility_of_all_elements_located((By.XPATH,'//li[@class="post"]/ancestor-or-self::li')))
-            # sleep(5)
             parents=self.driver.find_elements(By.XPATH,'//li[@class="post"]/ancestor-or-self::li')
             children=self.driver.find_elements(By.XPATH,'//li[@class="post"]')
 
@@ -106,7 +105,8 @@ class VideoPage():
         pass
     def moreInfo(self):
         try:
-            
+            self.driver.implicitly_wait(2)
+            WebDriverWait(self.driver,timeout= 5).until(EC.visibility_of_element_located((By.XPATH,'//*[text()="More info"]')))
             moreInfoBtn=self.driver.find_element(By.XPATH,'//*[text()="More info"]')
             self.driver.execute_script('arguments[0].scrollIntoView(true);',moreInfoBtn)
             self.driver.execute_script('arguments[0].click();',moreInfoBtn)
