@@ -57,37 +57,87 @@ class ListPage():
             slug=slugify(temp[-1]);
             if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug)):
                 os.makedirs(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug))
-            if os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completed.txt')):
+            if os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completed.txt')) and os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completedInfo.txt')):
                 continue
             videoPage=VideoPage(self.driver)
-            # sleep(2)
-            epCount=int(videoPage.getEpisodeCount())
-            # sleep(2)
-            comments=[]
-            for i in range(epCount):
-                if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}')):
-                    os.makedirs(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}'))
-                if os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt')):
-                    continue
-                videoPage.selectEpisode(i+1,link)
-                sleep(2)
-                comment=videoPage.getComments()
-                with open(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','comment.json'), 'w+', encoding='utf-8') as f:
-                    json.dump(comment, f, ensure_ascii=False, indent=4)
-                if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt')):
-                    os.makedirs(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt'))
-                comments.append(comment)
-            print(comments)
-            res.append([comments,link])
+            if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completed.txt')):
+                
+                # sleep(2)
+                epCount=int(videoPage.getEpisodeCount())
+                # sleep(2)
+                comments=[]
+                for i in range(epCount):
+                    if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}')):
+                        os.makedirs(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}'))
+                    if os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt')):
+                        continue
+                    videoPage.selectEpisode(i+1,link)
+                    sleep(2)
+                    comment=videoPage.getComments()
+                    
+                    with open(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','comment.json'), 'w+', encoding='utf-8') as f:
+                        json.dump(comment, f, ensure_ascii=False, indent=4)
+                    if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt')):
+                        os.makedirs(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,f'eps{i+1}','completed.txt'))
+                    comments.append(comment)
+                print(comments)
+            videoPage.moreInfo()
+            if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completedInfo.txt')):
+                moreInfoPage=MoreInfo(self.driver)
+                moreInfoData={}
+                try:
+                    moreInfoData['names']=moreInfoPage.names()
+                except:
+                    pass
+                try:
+                    moreInfoData['details']=moreInfoPage.details()
+                except:
+                    pass
+                try:
+                    moreInfoData['synopsis']=moreInfoPage.synopsis()
+                except:
+                    pass
+                try:
+                    moreInfoData['related']=moreInfoPage.relatedTab()
+                except:
+                    pass
+                try:
+                    moreInfoData['opening_ending']=moreInfoPage.opEndTab()
+                except:
+                    pass
+                try:
+                    moreInfoData['similar']=moreInfoPage.similarTab()
+                except:
+                    pass
+                try:
+                    moreInfoData['trailer']=moreInfoPage.trailerTab()
+                except:
+                    pass
+                
+                try:
+                    moreInfoData['comments']=moreInfoPage.comments()
+                except:
+                    pass
+                try:
+                    moreInfoData['images']=moreInfoPage.images()
+                except:
+                    pass
+                with open(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'info.json'), 'w+', encoding='utf-8') as f:
+                        json.dump(moreInfoData, f, ensure_ascii=False, indent=4)
+                
+            # 
+            # res.append([comments,link])
             with open(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completed.txt'),'w+') as f:
+                f.write('this link has completed comments')
+            with open(os.path.join(const.BASE_FOLDER,'data',char.upper(),slug,'completedInfo.txt'),'w+') as f:
                 f.write('this link has completed comments')
 
         # np.save('temp.npy',res)
         
         # resjson=json.dumps(res)
-        with open('data.json', 'w', encoding='utf-8') as f:
-            json.dump(res, f, ensure_ascii=False, indent=4)
-        print(res)
+        # with open('data.json', 'w', encoding='utf-8') as f:
+        #     json.dump(res, f, ensure_ascii=False, indent=4)
+        # print(res)
         return res
         # except:
         #     print(f'{char} error')

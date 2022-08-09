@@ -26,10 +26,12 @@ class Anime(webdriver.Chrome):
         for i in azlist:
             if not os.path.exists(os.path.join(const.BASE_FOLDER,'data',i.upper())):
                 os.makedirs(os.path.join(const.BASE_FOLDER,'data',i.upper()))
-            if os.path.exists(os.path.join(const.BASE_FOLDER,'data',i.upper(),'completed.txt')):
+            if os.path.exists(os.path.join(const.BASE_FOLDER,'data',i.upper(),'completed.txt')) and os.path.exists(os.path.join(const.BASE_FOLDER,'data',i.upper(),'completedInfo.txt')):
                 continue
             page.startChar(i) 
             with open(os.path.join(const.BASE_FOLDER,'data',i.upper(),'completed.txt'),'w+') as f:
+                f.write(f'{i} completed')
+            with open(os.path.join(const.BASE_FOLDER,'data',i.upper(),'completedInfo.txt'),'w+') as f:
                 f.write(f'{i} completed')
             self.get('https://animixplay.to/list')
     def landingPage(self):

@@ -16,7 +16,9 @@ def getInfo(details:list):
             elif row[0]=='Aired':
                 temp=row[1].split('to')
                 info['start']=temp[0].strip()
-                info['end']=temp[1].strip()
+                if len(temp)>1:
+
+                    info['end']=temp[1].strip()
             elif row[0]=='Popularity':
                 temp=row[1].split('#')
                 info['popularity']=temp[0].strip()
